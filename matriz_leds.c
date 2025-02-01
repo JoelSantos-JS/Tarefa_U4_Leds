@@ -12,17 +12,13 @@
 #define OUT_PIN 7
 
 // Gera o binário que controla a cor de cada célula do LED
-//rotina para definição da intensidade de cores do led
+// Rotina para definição da intensidade de cores do LED
 uint32_t gerar_binario_cor(double red, double green, double blue)
 {
-  unsigned char RED, GREEN, BLUE;
-  RED = red * 255.0;
-  GREEN = green * 255.0;
-  BLUE = blue * 255.0;
-  return (GREEN << 24) | (RED << 16) | (BLUE << 8);
+    return ((uint8_t)(green * 255) << 24) | ((uint8_t)(red * 255) << 16) | ((uint8_t)(blue * 255) << 8);
 }
 
-uint configurar_matriz(PIO pio){
+uint configurar_matriz(PIO pio) {
     bool ok;
 
     // Define o clock para 128 MHz, facilitando a divisão pelo clock
@@ -34,7 +30,7 @@ uint configurar_matriz(PIO pio){
     printf("iniciando a transmissão PIO");
     if (ok) printf("clock set to %ld\n", clock_get_hz(clk_sys));
 
-    //configurações da PIO
+    // Configurações da PIO
     uint offset = pio_add_program(pio, &pio_matrix_program);
     uint sm = pio_claim_unused_sm(pio, true);
     pio_matrix_program_init(pio, sm, offset, OUT_PIN);
@@ -42,34 +38,28 @@ uint configurar_matriz(PIO pio){
     return sm;
 }
 
-void imprimir_desenho(Matriz_leds_config configuracao, PIO pio, uint sm){
-    for (int contadorLinha = 4; contadorLinha >= 0; contadorLinha--){
-        if(contadorLinha % 2){
-            for (int contadorColuna = 0; contadorColuna < 5; contadorColuna ++){
-                uint32_t valor_cor_binario = gerar_binario_cor(
-                    configuracao[contadorLinha][contadorColuna].red,
-                    configuracao[contadorLinha][contadorColuna].green,
-                    configuracao[contadorLinha][contadorColuna].blue
-                );
+void imprimir_desenho(Matriz_leds_config configuracao, PIO pio, uint sm) {
+    for (int contadorLinha = 4; contadorLinha >= 0; contadorLinha--) {
+        int incremento = (contadorLinha % 2 == 0) ? -1 : 1;  // Decide o sentido de iteração para a linha
+        int colunaInicial = (contadorLinha % 2 == 0) ? 4 : 0;  // Define a coluna inicial com base no par/ímpar
 
-                pio_sm_put_blocking(pio, sm, valor_cor_binario);
-            }
-        }else{
-            for (int contadorColuna = 4; contadorColuna >= 0; contadorColuna --){
-                uint32_t valor_cor_binario = gerar_binario_cor(
-                    configuracao[contadorLinha][contadorColuna].red,
-                    configuracao[contadorLinha][contadorColuna].green,
-                    configuracao[contadorLinha][contadorColuna].blue
-                );
-
-                pio_sm_put_blocking(pio, sm, valor_cor_binario);
-            }
+        for (int contadorColuna = colunaInicial; (contadorLinha % 2 == 0) ? (contadorColuna >= 0) : (contadorColuna < 5); contadorColuna += incremento) {
+            uint32_t valor_cor_binario = gerar_binario_cor(
+                configuracao[contadorLinha][contadorColuna].red,
+                configuracao[contadorLinha][contadorColuna].green,
+                configuracao[contadorLinha][contadorColuna].blue
+            );
+            pio_sm_put_blocking(pio, sm, valor_cor_binario);
         }
     }
 }
 
-RGB_cod obter_cor_por_parametro_RGB(int red, int green, int blue){
-    RGB_cod cor_customizada = {red/255.0,green/255.0,blue/255.0};
+RGB_cod obter_cor_por_parametro_RGB(int red, int green, int blue) {
+    // Garantir que os valores de cor estejam dentro do intervalo [0, 255]
+    red = red < 0 ? 0 : (red > 255 ? 255 : red);
+    green = green < 0 ? 0 : (green > 255 ? 255 : green);
+    blue = blue < 0 ? 0 : (blue > 255 ? 255 : blue);
 
+    RGB_cod cor_customizada = {red / 255.0, green / 255.0, blue / 255.0};
     return cor_customizada;
 }
