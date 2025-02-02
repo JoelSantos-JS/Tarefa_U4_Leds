@@ -2,6 +2,8 @@
 
 Este projeto foi desenvolvido para a placa de desenvolvimento **BitDogLab** utilizando o microcontrolador **RP2040**. O objetivo é implementar a manipulação de LEDs e botões, demonstrando o uso de interrupções, controle de LEDs WS2812, debouncing via software e o uso de resistores de pull-up internos.
 
+![Esquema do Projeto](https://i.ibb.co/n8V0yChd/photo-2025-02-02-07-53-00.jpg)
+
 ## Objetivos
 
 - **Compreender o funcionamento das interrupções** em microcontroladores.
@@ -33,23 +35,24 @@ Este projeto foi desenvolvido para a placa de desenvolvimento **BitDogLab** util
 
 ## Como Funciona
 
-### LEDs
+### 🔴 LEDs
 
-- O LED vermelho do RGB piscando é controlado com um temporizador para acionar interrupções a cada 200ms, garantindo o piscar a uma taxa de 5 vezes por segundo.
-- A matriz 5x5 de LEDs é usada para exibir números de 0 a 9. Cada número é gerado com base no controle de segmentos de LEDs e exibido conforme o valor da variável de incremento/decremento.
+- O **LED vermelho do RGB** pisca continuamente com uma frequência de **5 vezes por segundo**.
+- A **matriz de LEDs 5x5 WS2812** exibe os números de **0 a 9**. Cada número possui um formato pré-definido e cores associadas.
 
-### Botões
+### 🎮 Botões
 
-- Os botões A e B utilizam interrupções para detectar pressões. Para evitar problemas de bouncing, o código implementa o **debouncing via software**, garantindo que cada pressionamento de botão seja detectado corretamente.
-- O Botão A incrementa o número mostrado na matriz e o Botão B decrementa esse número.
+- O **Botão A** avança para o próximo número na matriz.
+- O **Botão B** retorna para o número anterior.
+- As interrupções garantem que os botões sejam detectados instantaneamente.
 
-### Debouncing
+### ⏳ Debouncing
 
-- A técnica de **debouncing via software** foi utilizada para garantir que o estado do botão seja estabilizado antes de ser processado, evitando múltiplas leituras do mesmo pressionamento.
+- O efeito de bouncing dos botões é tratado via **software**, garantindo que cada pressionamento seja processado apenas uma vez.
 
 ## Como Rodar o Projeto
 
-1. **Clone o repositório**:
-   ```bash
-   git clone <URL-do-repositório>
-   cd <diretório-do-projeto>
+### 📥 1. Clone o repositório
+```bash
+git clone <URL-do-repositório>
+cd <diretório-do-projeto>
