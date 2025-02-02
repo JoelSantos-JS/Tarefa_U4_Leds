@@ -50,9 +50,28 @@ Este projeto foi desenvolvido para a placa de desenvolvimento **BitDogLab** util
 
 - O efeito de bouncing dos botões é tratado via **software**, garantindo que cada pressionamento seja processado apenas uma vez.
 
+- 📌 Conclusão
+Este projeto demonstrou como controlar LEDs e botões usando um RP2040 na placa BitDogLab, aplicando técnicas avançadas como:
+
+Interrupções para botões
+Debouncing via software
+Controle de LEDs WS2812
+Uso de GPIOs com resistores de pull-up internos
+
+
+🎥 Vídeo Explicativo
+Para uma explicação mais detalhada, assista ao vídeo abaixo:
+
+
+
+🔗 Assistir no YouTube: https://www.youtube.com/watch?v=CrZgHFkFbEg&ab_channel=GoldenBoy
+
+
 ## Como Rodar o Projeto
 
 ### 📥 1. Clone o repositório
 ```bash
 git clone <URL-do-repositório>
 cd <diretório-do-projeto>
+
+
